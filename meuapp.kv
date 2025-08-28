@@ -1,62 +1,111 @@
-#:kivy 2.1.0
-<WelcomeScreen>:
+#:kivy 2.3.0
+
+<WelcomeScreenManager@Screen>:
+    name: 'welcome'
     BoxLayout:
         orientation: 'vertical'
-        padding: 20
-        spacing: 10
-
+        padding: [40, 40]
+        spacing: 20
+        canvas.before:
+            Color:
+                rgba: 0.2, 0.4, 0.8, 1  # azul personalizado
+            Rectangle:
+                pos: self.pos
+                size: self.size
         Label:
-            text: 'Bem-vindo ao Meu App'
+            text: "Bem-vindo ao App de Filmes"
             font_size: 32
-            color: 1, 0.5, 0  # Custom color
+            color: 1,1,1,1
             bold: True
+            halign: 'center'
             size_hint_y: None
-            height: 50
-
+            height: 60
         TextInput:
             id: name_input
-            hint_text: 'Digite seu nome'
-            size_hint_y: None
-            height: 40
-
-        Button:
-            text: 'Continuar'
-            size_hint_y: None
-            height: 40
-            background_color: 0, 0.5, 1, 1  # Custom button color
-            on_press:
-                app.user_name = name_input.text
-                app.root.current = 'content'
-                app.root.transition.direction = 'left'  # Transition effect
-
-<ContentScreen>:
-    BoxLayout:
-        orientation: 'vertical'
-        padding: 20
-        spacing: 10
-
-        Label:
-            text: 'Conteúdo do App'
-            font_size: 32
-            color: 0, 0.5, 0.5  # Custom color
-            bold: True
+            hint_text: "Digite seu nome"
+            font_size: 18
+            multiline: False
             size_hint_y: None
             height: 50
+            halign: 'center'
+        Button:
+            text: "Continuar"
+            font_size: 22
+            background_color: 0.1, 0.7, 0.3, 1
+            background_normal: ""
+            color: 1,1,1,1
+            size_hint_y: None
+            height: 50
+            on_press:
+                app.user_name = name_input.text
+                app.root.current = 'suggestion'
 
+<SuggestionScreenManager@Screen>:
+    name: 'suggestion'
+    BoxLayout:
+        orientation: 'vertical'
+        padding: [40, 40]
+        spacing: 20
+        canvas.before:
+            Color:
+                rgba: 0.8, 0.3, 0.2, 1  # vermelho personalizado
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        Label:
+            text: "App de Filmes"
+            font_size: 32
+            color: 1,1,1,1
+            bold: True
+            halign: 'center'
+            size_hint_y: None
+            height: 60
+        Label:
+            text: "Escolha um gênero para receber uma sugestão"
+            font_size: 20
+            color: 1,1,1,1
+            halign: 'center'
+            size_hint_y: None
+            height: 40
+        Spinner:
+            id: genre_spinner
+            text: "Escolha o gênero"
+            values: app.movies.keys()
+            font_size: 18
+            size_hint_y: None
+            height: 50
+            background_color: 0.9, 0.7, 0.2, 1
+            color: 0,0,0,1
+        Button:
+            text: "Limpar"
+            font_size: 20
+            background_color: 0.2, 0.2, 0.8, 1
+            background_normal: ""
+            color: 1,1,1,1
+            size_hint_y: None
+            height: 50
+            on_press:
+                genre_spinner.text = "Escolha o gênero"
+                result_label.text = ""
+        Button:
+            text: "Sugerir filme"
+            font_size: 22
+            background_color: 0.8, 0.1, 0.1, 1
+            background_normal: ""
+            color: 1,1,1,1
+            size_hint_y: None
+            height: 50
+            on_press:
+                result_label.text = app.user_name + ", assista: " + (app.suggest_movie(genre_spinner.text) if genre_spinner.text != "Escolha o gênero" else "Escolha um gênero!")
         Label:
             id: result_label
-            text: ''
-            font_size: 24
+            text: ""
+            font_size: 20
+            color: 1,1,1,1
+            halign: 'center'
             size_hint_y: None
             height: 40
 
-        Button:
-            text: 'Voltar'
-            size_hint_y: None
-            height: 40
-            background_color: 1, 0, 0, 1  # Custom button color
-            on_press:
-                app.root.current = 'welcome'
-                app.root.transition.direction = 'right'  # Transition effect
-</contents>
-</attachment>
+ScreenManager:
+    WelcomeScreenManager:
+    SuggestionScreenManager:
