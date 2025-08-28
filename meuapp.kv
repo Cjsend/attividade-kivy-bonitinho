@@ -1,0 +1,62 @@
+#:kivy 2.1.0
+<WelcomeScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 20
+        spacing: 10
+
+        Label:
+            text: 'Bem-vindo ao Meu App'
+            font_size: 32
+            color: 1, 0.5, 0  # Custom color
+            bold: True
+            size_hint_y: None
+            height: 50
+
+        TextInput:
+            id: name_input
+            hint_text: 'Digite seu nome'
+            size_hint_y: None
+            height: 40
+
+        Button:
+            text: 'Continuar'
+            size_hint_y: None
+            height: 40
+            background_color: 0, 0.5, 1, 1  # Custom button color
+            on_press:
+                app.user_name = name_input.text
+                app.root.current = 'content'
+                app.root.transition.direction = 'left'  # Transition effect
+
+<ContentScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 20
+        spacing: 10
+
+        Label:
+            text: 'Conteúdo do App'
+            font_size: 32
+            color: 0, 0.5, 0.5  # Custom color
+            bold: True
+            size_hint_y: None
+            height: 50
+
+        Label:
+            id: result_label
+            text: ''
+            font_size: 24
+            size_hint_y: None
+            height: 40
+
+        Button:
+            text: 'Voltar'
+            size_hint_y: None
+            height: 40
+            background_color: 1, 0, 0, 1  # Custom button color
+            on_press:
+                app.root.current = 'welcome'
+                app.root.transition.direction = 'right'  # Transition effect
+</contents>
+</attachment>
